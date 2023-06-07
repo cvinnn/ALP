@@ -197,5 +197,10 @@ namespace ALP
                 MessageBox.Show("Silahkan Pilih Dokter Yang Mau di Hapus", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void txtHarga_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
     }
 }

@@ -253,8 +253,6 @@ namespace ALP
             cmd = new MySqlCommand(query, conn);
             reader = cmd.ExecuteReader();
             conn.Close();
-
-            MessageBox.Show("Obat Berhasil Di Input!");
         }
 
         public string iduseobat;
@@ -278,6 +276,8 @@ namespace ALP
                     int qty = GetSelectedQty[i];
                     InsertUseObat(idobat, qty);
                 }
+
+                MessageBox.Show("Obat Berhasil Di Input!");
 
                 this.Hide();
                 Form1 parentForm = new Form1();
