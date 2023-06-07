@@ -11,9 +11,9 @@ using MySql.Data.MySqlClient;
 
 namespace ALP
 {
-    public partial class Form2 : Form
+    public partial class InsertPerawat : Form
     {
-        public Form2()
+        public InsertPerawat()
         {
             InitializeComponent();
         }
@@ -26,6 +26,8 @@ namespace ALP
         MySqlDataReader reader;
 
         DataTable dt;
+
+        string newidperawat;
 
         public void cbLoader()
         {
@@ -54,11 +56,49 @@ namespace ALP
             dataGridView1.DataSource = dt;
 
             dataGridView1.Columns["id_perawat"].Visible = false;
+            dataGridView1.Columns["remove"].Visible = false;
+        }
+
+        public void generateidperawat()
+        {
+            dt = new DataTable();
+
+            query = $"select id_perawat from perawat order by 1";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            List<string> listkamar = new List<string>();
+
+            string lastid;
+            string depan;
+            string zero = "";
+
+            int id;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                listkamar.Add(row.ToString());
+            }
+
+            lastid = listkamar.Last();
+            depan = lastid.Substring(0, 1);
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
+
+
+            for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
+            {
+                zero += "0";
+            }
+
+            newidperawat = depan + zero + id;
         }
 
         public void removeperawat(string idperawat)
         {
-            query = $"update pasien set status 'N'";
+            query = $"update perawat set status 1 where id_pasien = {idperawat}";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -68,14 +108,14 @@ namespace ALP
 
         public void insertperawat(string namaperawat, string kelamin, string lantai)
         {
-            query = $"INSERT INTO perawat values (id, '{namaperawat}', '{kelamin}', 'Y');";
+            query = $"INSERT INTO perawat values ({newidperawat}, '{namaperawat}', '{kelamin}', '0');";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
             reader = cmd.ExecuteReader();
             conn.Close();
 
-            MessageBox.Show("Pasien Berhasil di Input");
+            MessageBox.Show("Perawat Berhasil di Input");
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
@@ -108,8 +148,9 @@ namespace ALP
             else
             {
                 string namaperawat = txtnamaperawat.Text.ToString();
-                string kelamin = cbalatkelamin.SelectedText.ToString();
+                string kelamin = cbalatkelamin.SelectedText.ToString().Substring(0, 1);
                 string lantai = cbLantai.SelectedText.ToString();
+                generateidperawat();
 
                 insertperawat(namaperawat, kelamin, lantai);
             }

@@ -32,13 +32,18 @@ namespace ALP
             id.TopLevel = false;
             id.Parent = this;
 
-            Form2 f2 = new Form2();
-            f2.TopLevel = false;
-            f2.Parent = this;
+            InsertPerawat ipr = new InsertPerawat();
+            ipr.TopLevel = false;
+            ipr.Parent = this;
+
+            InsertObat io =  new InsertObat();
+            io.TopLevel = false;
+            io.Parent = this;
 
             insrt.ip = ip;
             insrt.id = id;
-            insrt.f2 = f2;
+            insrt.ipr = ipr;
+            insrt.io = io;
         }
 
         private void ipload()

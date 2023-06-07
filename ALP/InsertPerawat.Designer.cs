@@ -1,6 +1,6 @@
 ﻿namespace ALP
 {
-    partial class Form2
+    partial class InsertPerawat
     {
         /// <summary>
         /// Required designer variable.
@@ -180,7 +180,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(416, 431);
             this.dataGridView1.TabIndex = 0;
             // 
-            // Form2
+            // InsertPerawat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,7 +190,7 @@
             this.Controls.Add(this.btnInsert);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form2";
+            this.Name = "InsertPerawat";
             this.Text = "InsertPerawat";
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

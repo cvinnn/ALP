@@ -65,6 +65,12 @@
     <Compile Include="InsertDokter.Designer.cs">
       <DependentUpon>InsertDokter.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertObat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertObat.Designer.cs">
+      <DependentUpon>InsertObat.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertPerawat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InsertDokter.resx">
       <DependentUpon>InsertDokter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertObat.resx">
+      <DependentUpon>InsertObat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertPerawat.resx">
       <DependentUpon>InsertPerawat.cs</DependentUpon>

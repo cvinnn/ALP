@@ -31,6 +31,7 @@
             this.btnPasien = new System.Windows.Forms.Button();
             this.btnDokter = new System.Windows.Forms.Button();
             this.btnPerawat = new System.Windows.Forms.Button();
+            this.btnobat = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnPasien
@@ -63,12 +64,23 @@
             this.btnPerawat.UseVisualStyleBackColor = true;
             this.btnPerawat.Click += new System.EventHandler(this.btnPerawat_Click);
             // 
+            // btnobat
+            // 
+            this.btnobat.Location = new System.Drawing.Point(464, 499);
+            this.btnobat.Name = "btnobat";
+            this.btnobat.Size = new System.Drawing.Size(298, 64);
+            this.btnobat.TabIndex = 3;
+            this.btnobat.Text = "Obat";
+            this.btnobat.UseVisualStyleBackColor = true;
+            this.btnobat.Click += new System.EventHandler(this.btnobat_Click);
+            // 
             // Insert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1200, 675);
             this.ControlBox = false;
+            this.Controls.Add(this.btnobat);
             this.Controls.Add(this.btnPerawat);
             this.Controls.Add(this.btnDokter);
             this.Controls.Add(this.btnPasien);
@@ -85,6 +97,7 @@
         private System.Windows.Forms.Button btnPasien;
         private System.Windows.Forms.Button btnDokter;
         private System.Windows.Forms.Button btnPerawat;
+        private System.Windows.Forms.Button btnobat;
     }
 }
 

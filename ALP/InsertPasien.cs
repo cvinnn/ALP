@@ -42,7 +42,6 @@ namespace ALP
 
             query = "SELECT d.id_dokter as 'id', d.nama_dokter as 'nat' FROM dokter d;";
             conn = new MySqlConnection(strconn);
-            conn.Open();
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);
 
@@ -59,7 +58,6 @@ namespace ALP
 
             query = "select id_jenis, nama_jenis from jenis_kamar";
             conn = new MySqlConnection(strconn);
-            conn.Open();
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);
 
@@ -76,7 +74,6 @@ namespace ALP
 
             query = "select hubungan from penanggung_jawab group by 1 order by 1";
             conn = new MySqlConnection(strconn);
-            conn.Open();
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);
 
@@ -146,7 +143,7 @@ namespace ALP
 
             lastid = listkamar.Last();
             depan = lastid.Substring(0, 1);
-            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1));
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
 
             for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
@@ -183,7 +180,7 @@ namespace ALP
 
             lastid = listkamar.Last();
             depan = lastid.Substring(0, 1);
-            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1));
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
 
             for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
@@ -220,7 +217,7 @@ namespace ALP
 
             lastid = listkamar.Last();
             depan = lastid.Substring(0,1);
-            id = Convert.ToInt32(lastid.Substring(1, lastid.Length-1));
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length-1)) + 1;
 
 
             for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
@@ -256,7 +253,7 @@ namespace ALP
 
             lastid = listkamar.Last();
             depan = lastid.Substring(0, 1);
-            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1));
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
 
             for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
@@ -273,7 +270,7 @@ namespace ALP
             generateidkamar(idjenis);
             generateidnota();
 
-            query = $"insert into pasien values ('{newidpasien}', '{namapasien}', '{tgllahir}, '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', 1";
+            query = $"insert into pasien values ('{newidpasien}', '{namapasien}', '{tgllahir}, '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', '0'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -287,7 +284,7 @@ namespace ALP
             reader = cmd.ExecuteReader();
             conn.Close();
 
-            query = $"insert into nota values ('{newidnota}', '{newidpasien}', '{iddokter}, '{newnokamar}', '{tglmsk}', '{tglkeluar}', 0, 0";
+            query = $"insert into nota values ('{newidnota}', '{newidpasien}', '{iddokter}, '{newnokamar}', '{tglmsk}', '{tglkeluar}', 0, '0'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -339,7 +336,7 @@ namespace ALP
                 string namapj = txtnamapj.Text.ToString();
                 string notelp = txtnotelp.Text.ToString();
                 string alamat = txtalamat.Text.ToString();
-                string kelamin = cbalatkelamin.SelectedText.ToString();
+                string kelamin = cbalatkelamin.SelectedText.ToString().Substring(0,1);
                 string dokter = cbDokter.SelectedValue.ToString();
                 string kota = txtkota.Text.ToString();
                 string idjenis = cbJnsKmr.SelectedValue.ToString();

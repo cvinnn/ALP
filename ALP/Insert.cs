@@ -18,7 +18,9 @@ namespace ALP
         }
         public InsertPasien ip { get; set; }
         public InsertDokter id { get; set; }
-        public Form2 f2 { get; set; }
+        public InsertPerawat ipr { get; set; }
+        public InsertObat io { get; set; }
+
         private void btnPasien_Click(object sender, EventArgs e)
         {
             ip.Show();
@@ -26,12 +28,18 @@ namespace ALP
         }
         private void btnPerawat_Click(object sender, EventArgs e)
         {
-            f2.Show();
+            ipr.Show();
             this.Hide();
         }
         private void btnDokter_Click(object sender, EventArgs e)
         {
             id.Show();
+            this.Hide();
+        }
+
+        private void btnobat_Click(object sender, EventArgs e)
+        {
+            io.Show();
             this.Hide();
         }
 
