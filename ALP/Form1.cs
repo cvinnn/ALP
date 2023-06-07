@@ -46,13 +46,5 @@ namespace ALP
             insrt.io = io;
         }
 
-        private void ipload()
-        {
-            InsertPasien insrt = new InsertPasien();
-            insrt.TopLevel = false;
-            insrt.Parent = this;
-            insrt.Show();
-        }
-
     }
 }

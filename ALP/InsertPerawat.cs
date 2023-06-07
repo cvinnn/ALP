@@ -16,6 +16,7 @@ namespace ALP
         public InsertPerawat()
         {
             InitializeComponent();
+            cbLoader();
             cbalatkelamin.DropDownStyle = ComboBoxStyle.DropDownList;
             cbLantai.DropDownStyle = ComboBoxStyle.DropDownList;
         }
@@ -153,10 +154,8 @@ namespace ALP
                 insertperawat(namaperawat, kelamin, lantai);
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
         }
@@ -176,10 +175,8 @@ namespace ALP
                 MessageBox.Show("Perawat Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
             else

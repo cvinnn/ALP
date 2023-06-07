@@ -434,10 +434,8 @@ namespace ALP
                 insertpasien(namapasien, namapj, tgllahir, kelamin, alamat, kota, notelp, dokter, notelppj, hub, tglmasuk, tglkeluar, idjenis);
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
         }
@@ -457,10 +455,8 @@ namespace ALP
                 MessageBox.Show("Pasien Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
             else

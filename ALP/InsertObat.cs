@@ -17,6 +17,7 @@ namespace ALP
         {
             InitializeComponent();
             InitializeMedicationPanel();
+            cbLoader();
             cbPasien.SelectedIndexChanged += cbPasien_SelectedIndexChanged;
             panel1.Visible = false;
             cbPasien.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -63,11 +64,6 @@ namespace ALP
         {
             this.Dock = DockStyle.Fill;
             this.TopLevel = false;
-
-            cbLoader();
-            InitializeMedicationPanel();
-            cbPasien.SelectedIndexChanged += cbPasien_SelectedIndexChanged;
-            panel1.Visible = false;
         }
 
         private List<Label> medicationLabels;
@@ -284,10 +280,8 @@ namespace ALP
                 }
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
         }

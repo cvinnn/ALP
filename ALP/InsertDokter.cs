@@ -167,10 +167,8 @@ namespace ALP
                 insertdokter(namaperawat, kelamin, spesialis, harga);
 
                 this.Hide();
-
-                Insert insrt = new Insert();
-                insrt.ShowDialog();
-
+                Form1 parentForm = new Form1();
+                parentForm.Show();
                 this.Close();
             }
         }
