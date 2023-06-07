@@ -142,10 +142,6 @@
             // cbLantai
             // 
             this.cbLantai.FormattingEnabled = true;
-            this.cbLantai.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbLantai.Location = new System.Drawing.Point(179, 157);
             this.cbLantai.Name = "cbLantai";
             this.cbLantai.Size = new System.Drawing.Size(232, 24);
@@ -154,10 +150,6 @@
             // cbalatkelamin
             // 
             this.cbalatkelamin.FormattingEnabled = true;
-            this.cbalatkelamin.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbalatkelamin.Location = new System.Drawing.Point(179, 113);
             this.cbalatkelamin.Name = "cbalatkelamin";
             this.cbalatkelamin.Size = new System.Drawing.Size(232, 24);

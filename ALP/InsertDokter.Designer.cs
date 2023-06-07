@@ -32,6 +32,7 @@
             this.btnInsert = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,10 +43,9 @@
             this.cbalatkelamin = new System.Windows.Forms.ComboBox();
             this.txtHarga = new System.Windows.Forms.TextBox();
             this.txtnamaDokter = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRemove
@@ -87,6 +87,16 @@
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(10, 26);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(416, 431);
+            this.dataGridView1.TabIndex = 0;
             // 
             // panel1
             // 
@@ -154,10 +164,6 @@
             // cbSpecialis
             // 
             this.cbSpecialis.FormattingEnabled = true;
-            this.cbSpecialis.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbSpecialis.Location = new System.Drawing.Point(179, 157);
             this.cbSpecialis.Name = "cbSpecialis";
             this.cbSpecialis.Size = new System.Drawing.Size(232, 24);
@@ -166,10 +172,6 @@
             // cbalatkelamin
             // 
             this.cbalatkelamin.FormattingEnabled = true;
-            this.cbalatkelamin.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbalatkelamin.Location = new System.Drawing.Point(179, 113);
             this.cbalatkelamin.Name = "cbalatkelamin";
             this.cbalatkelamin.Size = new System.Drawing.Size(232, 24);
@@ -189,16 +191,6 @@
             this.txtnamaDokter.Size = new System.Drawing.Size(232, 22);
             this.txtnamaDokter.TabIndex = 1;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(10, 26);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(416, 431);
-            this.dataGridView1.TabIndex = 0;
-            // 
             // InsertDokter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -213,9 +205,9 @@
             this.Name = "InsertDokter";
             this.Text = "Form2";
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }

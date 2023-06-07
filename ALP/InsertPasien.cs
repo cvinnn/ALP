@@ -19,6 +19,10 @@ namespace ALP
         public InsertPasien()
         {
             InitializeComponent();
+            cbJnsKmr.DropDownStyle = ComboBoxStyle.DropDownList; 
+            cbhub.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbDokter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbalatkelamin.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         string strconn = "server=localhost;uid=root;pwd=Minato2004-05-05;database=biocare";
@@ -35,6 +39,7 @@ namespace ALP
         string newidpj;
         string newnokamar;
         string newidnota;
+        string idperawat;
 
         public void cbLoader()
         {
@@ -63,12 +68,12 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            cbDokter.DataSource = dt;
-            cbDokter.ValueMember = "id_jenis";
-            cbDokter.DisplayMember = "nama_jenis";
+            cbJnsKmr.DataSource = dt;
+            cbJnsKmr.ValueMember = "id_jenis";
+            cbJnsKmr.DisplayMember = "nama_jenis";
 
-            cbDokter.SelectedItem = "";
-            cbDokter.SelectedValue = "";
+            cbJnsKmr.SelectedItem = "";
+            cbJnsKmr.SelectedValue = "";
 
             dt = new DataTable();
 
@@ -79,12 +84,12 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            cbDokter.DataSource = dt;
-            cbDokter.ValueMember = "hubungan";
-            cbDokter.DisplayMember = "hubungan";
+            cbhub.DataSource = dt;
+            cbhub.ValueMember = "hubungan";
+            cbhub.DisplayMember = "hubungan";
 
-            cbDokter.SelectedItem = "";
-            cbDokter.SelectedValue = "";
+            cbhub.SelectedItem = "";
+            cbhub.SelectedValue = "";
 
             cbalatkelamin.Items.Add("Male");
             cbalatkelamin.Items.Add("Female");
@@ -94,7 +99,7 @@ namespace ALP
         {
             dt = new DataTable();
 
-            query = "SELECT p.id_pasien as 'idpasien', k.no_kamar as 'No. Kamar', p.nama_pasien as 'Pasien', j.nama_PJ as 'Penanggung Jawab', d.nama_dokter as 'Dokter' FROM pasien p, kamar k, penanggung_jawab j, dokter d, nota n WHERE n.id_pasien = p.id_pasien and n.id_kamar = k.id_kamar and n.id_dokter = d.id_dokter and j.id_penanggungJawab = p.id_penanggungJawab;";
+            query = "SELECT p.id_pasien as 'idpasien', k.no_kamar as 'No. Kamar', p.nama_pasien as 'Pasien', j.nama_PJ as 'Penanggung Jawab', d.nama_dokter as 'Dokter' FROM pasien p, kamar k, penanggung_jawab j, dokter d, nota n WHERE n.id_pasien = p.id_pasien and n.id_kamar = k.id_kamar and n.id_dokter = d.id_dokter and j.id_penanggungJawab = p.id_penanggungJawab and p.`remove` = '0';";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -109,7 +114,7 @@ namespace ALP
 
         public void removepasien(string idpasien)
         {
-            query = $"update pasien set status 'N' where id_pasien = {idpasien}";
+            query = $"update pasien set `remove` = '1' where id_pasien = '{idpasien}'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -121,14 +126,14 @@ namespace ALP
         {
             dt = new DataTable();
 
-            query = "SELECT p.id_pasien as 'idpasien' FROM pasien p;";
+            query = "SELECT p.id_pasien FROM pasien p order by 1;";
             conn = new MySqlConnection(strconn);
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);
 
             adapter.Fill(dt);
 
-            List<string> listkamar = new List<string>();
+            List<string> listid = new List<string>();
 
             string lastid;
             string depan;
@@ -138,10 +143,11 @@ namespace ALP
 
             foreach (DataRow row in dt.Rows)
             {
-                listkamar.Add(row.ToString());
+                string idpasien = row["id_pasien"].ToString();
+                listid.Add(idpasien);
             }
 
-            lastid = listkamar.Last();
+            lastid = listid[listid.Count-1];
             depan = lastid.Substring(0, 1);
             id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
@@ -151,7 +157,7 @@ namespace ALP
                 zero += "0";
             }
 
-            newidpj = depan + zero + id;
+            newidpasien = depan + zero + id;
         }
 
         public void generateidpj()
@@ -165,7 +171,7 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            List<string> listkamar = new List<string>();
+            List<string> listid = new List<string>();
 
             string lastid;
             string depan;
@@ -175,10 +181,11 @@ namespace ALP
 
             foreach (DataRow row in dt.Rows)
             {
-                listkamar.Add(row.ToString());
+                string idpj = row["idpj"].ToString();
+                listid.Add(idpj);
             }
 
-            lastid = listkamar.Last();
+            lastid = listid[listid.Count-1];
             depan = lastid.Substring(0, 1);
             id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
@@ -202,7 +209,7 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            List<string> listkamar = new List<string>();
+            List<string> listid = new List<string>();
 
             string lastid;
             string depan;
@@ -212,10 +219,11 @@ namespace ALP
 
             foreach (DataRow row in dt.Rows)
             {
-                listkamar.Add(row.ToString());
+                string idkamar = row["id_kamar"].ToString();
+                listid.Add(idkamar);
             }
 
-            lastid = listkamar.Last();
+            lastid = listid[listid.Count-1];
             depan = lastid.Substring(0,1);
             id = Convert.ToInt32(lastid.Substring(1, lastid.Length-1)) + 1;
 
@@ -226,6 +234,44 @@ namespace ALP
             }
 
             newnokamar = depan + zero + id;
+        }
+        public void generateidperawat(string lantai)
+        {
+            dt = new DataTable();
+
+            query = $"select id_perawat from perawat where id_perawat like '{lantai}%'order by 1";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            List<string> listid = new List<string>();
+
+            string lastid;
+            string depan;
+            string zero = "";
+
+            int id;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string idkamar = row["id_perawat"].ToString();
+                listid.Add(idkamar);
+            }
+
+            lastid = listid[listid.Count - 1];
+            depan = lastid.Substring(0, 1);
+            Random random = new Random();
+            id = random.Next(1, Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)));
+
+
+            for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
+            {
+                zero += "0";
+            }
+
+            idperawat = depan + zero + id;
         }
         public void generateidnota()
         {
@@ -238,7 +284,7 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            List<string> listkamar = new List<string>();
+            List<string> listid = new List<string>();
 
             string lastid;
             string depan;
@@ -248,10 +294,11 @@ namespace ALP
 
             foreach (DataRow row in dt.Rows)
             {
-                listkamar.Add(row.ToString());
+                string idnota = row["id_nota"].ToString();
+                listid.Add(idnota);
             }
 
-            lastid = listkamar.Last();
+            lastid = listid[listid.Count - 1];
             depan = lastid.Substring(0, 1);
             id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
@@ -263,28 +310,71 @@ namespace ALP
 
             newidnota = depan + zero + id;
         }
+        private string generateiduseobat()
+        {
+            dt = new DataTable();
+
+            query = $"select id_useobat from useobat order by 1";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            List<string> listuseobat = new List<string>();
+
+            string newid;
+            string lastid;
+            string depan;
+            string zero = "";
+
+            int id;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string value = row["id_useobat"].ToString();
+                string substring = value.Substring(0, 5);
+                listuseobat.Add(substring);
+            }
+
+            lastid = listuseobat[listuseobat.Count - 1];
+            depan = lastid.Substring(0, 1);
+            id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
+
+
+            for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
+            {
+                zero += "0";
+            }
+
+            newid = depan + zero + id;
+
+            return newid;
+        }
         public void insertpasien(string namapasien, string namapj, string tgllahir, string kelamin, string alamat,string kota, string notelp, string iddokter, string notelppj, string hub, string tglmsk, string tglkeluar, string idjenis)
         {
             generateidpasien();
             generateidpj();
             generateidkamar(idjenis);
             generateidnota();
+            generateidperawat(newnokamar.Substring(0,1));
+            string newiduseobat = generateiduseobat() + newnokamar.Substring(1);
 
-            query = $"insert into pasien values ('{newidpasien}', '{namapasien}', '{tgllahir}, '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', '0'";
+            query = $"INSERT INTO pasien VALUES ('{newidpasien}', '{namapasien}', '{tgllahir}', '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', '0')";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
             reader = cmd.ExecuteReader();
             conn.Close();
 
-            query = $"insert into penanggung_jawab values ('{newidpj}', '{namapj}', '{notelppj}, '{hub}'";
+            query = $"INSERT INTO penanggung_jawab VALUES ('{newidpj}', '{namapj}', '{notelppj}', '{hub}')";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
             reader = cmd.ExecuteReader();
             conn.Close();
 
-            query = $"insert into nota values ('{newidnota}', '{newidpasien}', '{iddokter}, '{newnokamar}', '{tglmsk}', '{tglkeluar}', 0, '0'";
+            query = $"INSERT INTO nota VALUES ('{newidnota}', '{newidpasien}', '{iddokter}', '{newnokamar}', '{idperawat}', '{newiduseobat}', '{tglmsk}', '{tglkeluar}', '0', '0')";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -292,14 +382,15 @@ namespace ALP
             conn.Close();
 
             MessageBox.Show("Pasien Berhasil di Input");
+
+            Insert insrt = new Insert();
+            insrt.Show();
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
         {
             this.Dock = DockStyle.Fill;
             this.TopLevel = false;
-            
-            cbLoader();
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
@@ -322,7 +413,7 @@ namespace ALP
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (dtptgllahir.Value.ToString() == "" && dtptglmsk.Value.ToString() == "" && dtptglkluar.Value.ToString() == "" && txtnamapasien.Text == "" && txtnamapj.Text == "" && txtnotelp.Text == "" && txtalamat.Text == "" && cbalatkelamin.SelectedText == "" && cbDokter.SelectedText == "" && txtkota.Text == "" && cbJnsKmr.SelectedText == "" && txtnopj.Text == "" && cbhub.SelectedText == "")
+            if (dtptgllahir.Value.ToString() == "" && dtptglmsk.Value.ToString() == "" && dtptglkluar.Value.ToString() == "" && txtnamapasien.Text == "" && txtnamapj.Text == "" && txtnotelp.Text == "" && txtalamat.Text == "" && cbalatkelamin.SelectedIndex != -1 && cbDokter.SelectedIndex != -1 && txtkota.Text == "" && cbJnsKmr.SelectedIndex != -1 && txtnopj.Text == "" && cbhub.SelectedIndex != -1)
             {
                 MessageBox.Show("Data Belum Lengkap");
             }
@@ -336,12 +427,12 @@ namespace ALP
                 string namapj = txtnamapj.Text.ToString();
                 string notelp = txtnotelp.Text.ToString();
                 string alamat = txtalamat.Text.ToString();
-                string kelamin = cbalatkelamin.SelectedText.ToString().Substring(0,1);
+                string kelamin = cbalatkelamin.Text.ToString().Substring(0,1);
                 string dokter = cbDokter.SelectedValue.ToString();
                 string kota = txtkota.Text.ToString();
                 string idjenis = cbJnsKmr.SelectedValue.ToString();
                 string notelppj = txtnopj.Text.ToString();
-                string hub = cbhub.SelectedText.ToString();
+                string hub = cbhub.Text.ToString();
 
                 insertpasien(namapasien, namapj, tgllahir, kelamin, alamat, kota, notelp, dokter, notelppj, hub, tglmasuk, tglkeluar, idjenis);
             }
@@ -360,6 +451,9 @@ namespace ALP
                 dgvloader();
 
                 MessageBox.Show("Pasien Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
+
+                Insert insrt = new Insert();
+                insrt.Show();
             }
             else
             {

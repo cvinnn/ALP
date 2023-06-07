@@ -245,10 +245,6 @@
             // cbhub
             // 
             this.cbhub.FormattingEnabled = true;
-            this.cbhub.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbhub.Location = new System.Drawing.Point(179, 471);
             this.cbhub.Name = "cbhub";
             this.cbhub.Size = new System.Drawing.Size(232, 24);
@@ -257,10 +253,6 @@
             // cbJnsKmr
             // 
             this.cbJnsKmr.FormattingEnabled = true;
-            this.cbJnsKmr.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbJnsKmr.Location = new System.Drawing.Point(179, 400);
             this.cbJnsKmr.Name = "cbJnsKmr";
             this.cbJnsKmr.Size = new System.Drawing.Size(232, 24);
@@ -269,10 +261,6 @@
             // cbDokter
             // 
             this.cbDokter.FormattingEnabled = true;
-            this.cbDokter.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbDokter.Location = new System.Drawing.Point(179, 370);
             this.cbDokter.Name = "cbDokter";
             this.cbDokter.Size = new System.Drawing.Size(232, 24);
@@ -281,10 +269,6 @@
             // cbalatkelamin
             // 
             this.cbalatkelamin.FormattingEnabled = true;
-            this.cbalatkelamin.Items.AddRange(new object[] {
-            "Pria",
-            "Wanita",
-            ""});
             this.cbalatkelamin.Location = new System.Drawing.Point(179, 256);
             this.cbalatkelamin.Name = "cbalatkelamin";
             this.cbalatkelamin.Size = new System.Drawing.Size(232, 24);
@@ -296,7 +280,6 @@
             this.txtkota.Name = "txtkota";
             this.txtkota.Size = new System.Drawing.Size(232, 22);
             this.txtkota.TabIndex = 5;
-            this.txtkota.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtnotelp_KeyPress);
             // 
             // txtnopj
             // 

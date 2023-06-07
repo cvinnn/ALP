@@ -19,7 +19,7 @@ namespace ALP
             InitializeMedicationPanel();
             cbPasien.SelectedIndexChanged += cbPasien_SelectedIndexChanged;
             panel1.Visible = false;
-
+            cbPasien.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         string strconn = "server=localhost;uid=root;pwd=Minato2004-05-05;database=biocare";
         string query;
@@ -30,6 +30,10 @@ namespace ALP
         MySqlDataReader reader;
 
         DataTable dt;
+
+        List<string> medicationNames;
+        List<string> medicationIDs;
+
 
         public void cbLoader()
         {
@@ -61,6 +65,9 @@ namespace ALP
             this.TopLevel = false;
 
             cbLoader();
+            InitializeMedicationPanel();
+            cbPasien.SelectedIndexChanged += cbPasien_SelectedIndexChanged;
+            panel1.Visible = false;
         }
 
         private List<Label> medicationLabels;
@@ -79,8 +86,8 @@ namespace ALP
             plusButtons = new List<Button>();
             minusButtons = new List<Button>();
 
-            List<string> medicationNames = GetMedicationNames();
-            List<string> medicationIDs = GetMedicationIds();
+            GetMedicationIDs();
+            GetMedicationNames();
 
             for (int i = 0; i < medicationNames.Count; i++)
             {
@@ -98,7 +105,7 @@ namespace ALP
                 textBox.Text = "0";
                 textBox.Size = new Size(40, 20);
                 textBox.Location = new Point(10 + col * 110, 30 + row * 50);
-                textBox.Tag = i;
+                textBox.Tag = medicationNames[i];
                 quantityTextBoxes.Add(textBox);
                 panel1.Controls.Add(textBox);
                 textBox.KeyPress += TextBox_KeyPress;
@@ -141,13 +148,14 @@ namespace ALP
             }
         }
 
-
         private void PlusButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             int index = (int)button.Tag;
             int currentValue = int.Parse(quantityTextBoxes[index].Text);
-            quantityTextBoxes[index].Text = (currentValue + 1).ToString();
+            {
+                quantityTextBoxes[index].Text = (currentValue + 1).ToString();
+            }
         }
 
         private void MinusButton_Click(object sender, EventArgs e)
@@ -156,12 +164,14 @@ namespace ALP
             int index = (int)button.Tag;
             int currentValue = int.Parse(quantityTextBoxes[index].Text);
             if (currentValue > 0)
+            {
                 quantityTextBoxes[index].Text = (currentValue - 1).ToString();
+            }
         }
 
-        private List<string> GetMedicationNames()
+        private void GetMedicationNames()
         {
-            List<string> medicationNames = new List<string>();
+            medicationNames = new List<string>();
 
             query = "SELECT nama_obat FROM obat;";
             conn = new MySqlConnection(strconn);
@@ -178,13 +188,11 @@ namespace ALP
 
             reader.Close();
             conn.Close();
-
-            return medicationNames;
         }
 
-        private List<string> GetMedicationIds()
+        private void GetMedicationIDs()
         {
-            List<string> medicationIds = new List<string>();
+            medicationIDs = new List<string>();
 
             query = "SELECT id_obat FROM obat;";
             conn = new MySqlConnection(strconn);
@@ -195,44 +203,88 @@ namespace ALP
 
             while (reader.Read())
             {
-                string medicationId = reader.GetString(0);
-                medicationIds.Add(medicationId);
+                string medicationid = reader.GetString(0);
+                medicationIDs.Add(medicationid);
             }
 
             reader.Close();
             conn.Close();
-
-            return medicationIds;
         }
-        private List<string> GetSelectedMedicationIds()
-        {
-            List<string> selectedMedicationIds = new List<string>();
 
-            foreach (Control control in panel1.Controls)
+        public void GetSelectedObat()
+        {
+            GetSelectedTag = new List<string>();
+            GetSelectedQty = new List<int>();
+
+            foreach (Control ctrl in panel1.Controls)
             {
-                if (control is TextBox textBox && textBox.Tag is string medicationId)
+                if (ctrl is TextBox txt)
                 {
-                    if (int.TryParse(textBox.Text, out int quantity) && quantity > 0)
+                    if (Convert.ToInt16(txt.Text) > 0)
                     {
-                        selectedMedicationIds.Add(medicationId);
+                        GetSelectedTag.Add(txt.Tag.ToString());
+                        GetSelectedQty.Add(Convert.ToInt16(txt.Text));
                     }
                 }
             }
-            return selectedMedicationIds;
         }
 
+        public string GetSelectedID;
+        public List<string> GetSelectedTag;
+        public List<int> GetSelectedQty;
 
-        public void insertUseObat(string idobat, int qty, string idnota)
+        private void GenerateIDUO(string idpasien)
         {
+            dt = new DataTable();
 
+            query = $"select id_nota, no_kamar, id_useobat from nota n join kamar k on k.id_kamar = n.id_kamar where n.id_pasien = '{idpasien}'";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            idnota = dt.Rows[0]["id_nota"].ToString();
+            nokamar = dt.Rows[0]["no_kamar"].ToString();
+            iduseobat = dt.Rows[0]["id_useobat"].ToString();
         }
 
+        public void InsertUseObat(string idobat, int qty)
+        {
+            query = $"INSERT INTO useobat VALUES ('{iduseobat}', '{idobat}', {qty}, '{idnota}')";
+            conn = new MySqlConnection(strconn);
+            conn.Open();
+            cmd = new MySqlCommand(query, conn);
+            reader = cmd.ExecuteReader();
+            conn.Close();
+
+            MessageBox.Show("Obat Berhasil Di Input!");
+        }
+
+        public string iduseobat;
+        public string nokamar;
+        public string idnota;
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            selectedid = GetSelectedMedicationIds();
+            GetSelectedObat();
+            if (cbPasien.SelectedText == "" && GetSelectedTag.Count <= 0)
+            {
+                MessageBox.Show("Data Belum Lengkap");
+            }
+            else
+            {
+                string idpasien = cbPasien.SelectedValue.ToString();
+                GenerateIDUO(idpasien);
+                for (int i = 0; i < GetSelectedTag.Count; i++)
+                {
+                    string idobat = medicationIDs[medicationNames.IndexOf(GetSelectedTag[i])];
+                    int qty = GetSelectedQty[i];
+                    InsertUseObat(idobat, qty);
+                }
 
-
+                this.Close();
+            }
         }
     }
 }

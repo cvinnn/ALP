@@ -16,6 +16,8 @@ namespace ALP
         public InsertPerawat()
         {
             InitializeComponent();
+            cbalatkelamin.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbLantai.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         string strconn = "server=localhost;uid=root;pwd=Minato2004-05-05;database=biocare";
         string query;
@@ -45,7 +47,7 @@ namespace ALP
         {
             dt = new DataTable();
 
-            query = "SELECT * FROM biocare.perawat;";
+            query = "SELECT * FROM biocare.perawat where `remove` = '0';";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -70,7 +72,7 @@ namespace ALP
 
             adapter.Fill(dt);
 
-            List<string> listkamar = new List<string>();
+            List<string> listid = new List<string>();
 
             string lastid;
             string depan;
@@ -80,10 +82,11 @@ namespace ALP
 
             foreach (DataRow row in dt.Rows)
             {
-                listkamar.Add(row.ToString());
+                string idperawat = row["id_perawat"].ToString();
+                listid.Add(idperawat);
             }
 
-            lastid = listkamar.Last();
+            lastid = listid[listid.Count - 1];
             depan = lastid.Substring(0, 1);
             id = Convert.ToInt32(lastid.Substring(1, lastid.Length - 1)) + 1;
 
@@ -98,7 +101,7 @@ namespace ALP
 
         public void removeperawat(string idperawat)
         {
-            query = $"update perawat set status 1 where id_pasien = {idperawat}";
+            query = $"update perawat set `remove` = '1' where id_pasien = '{idperawat}'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -108,7 +111,8 @@ namespace ALP
 
         public void insertperawat(string namaperawat, string kelamin, string lantai)
         {
-            query = $"INSERT INTO perawat values ({newidperawat}, '{namaperawat}', '{kelamin}', '0');";
+            generateidperawat();
+            query = $"INSERT INTO perawat values ('{newidperawat}', '{namaperawat}', '{kelamin}', '0');";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -116,20 +120,21 @@ namespace ALP
             conn.Close();
 
             MessageBox.Show("Perawat Berhasil di Input");
+
+            Insert insrt = new Insert();
+            insrt.Show();
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
         {
             this.Dock = DockStyle.Fill;
             this.TopLevel = false;
-
-            cbLoader();
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            panel1.Visible = true;
-            panel2.Visible = false;
+            this.panel1.Visible = true;
+            this.panel2.Visible = false;
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -141,15 +146,15 @@ namespace ALP
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtnamaperawat.Text == "" && cbalatkelamin.SelectedText == "" && cbLantai.SelectedText == "")
+            if (txtnamaperawat.Text == "" && cbalatkelamin.SelectedIndex != -1 && cbLantai.SelectedIndex != -1)
             {
                 MessageBox.Show("Data Belum Lengkap");
             }
             else
             {
                 string namaperawat = txtnamaperawat.Text.ToString();
-                string kelamin = cbalatkelamin.SelectedText.ToString().Substring(0, 1);
-                string lantai = cbLantai.SelectedText.ToString();
+                string kelamin = cbalatkelamin.Text.ToString().Substring(0, 1);
+                string lantai = cbLantai.Text.ToString();
                 generateidperawat();
 
                 insertperawat(namaperawat, kelamin, lantai);
@@ -169,6 +174,9 @@ namespace ALP
                 dgvloader();
 
                 MessageBox.Show("Perawat Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
+
+                Insert insrt = new Insert();
+                insrt.Show();
             }
             else
             {
