@@ -69,7 +69,6 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.btnDelete);
-            this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Location = new System.Drawing.Point(647, 28);
             this.panel2.Name = "panel2";
@@ -96,7 +95,7 @@
             this.panel1.Controls.Add(this.cbLantai);
             this.panel1.Controls.Add(this.cbalatkelamin);
             this.panel1.Controls.Add(this.txtnamaperawat);
-            this.panel1.Location = new System.Drawing.Point(3, 0);
+            this.panel1.Location = new System.Drawing.Point(647, 28);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(437, 619);
             this.panel1.TabIndex = 1;
@@ -179,6 +178,7 @@
             this.ClientSize = new System.Drawing.Size(1200, 675);
             this.ControlBox = false;
             this.Controls.Add(this.btnRemove);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnInsert);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

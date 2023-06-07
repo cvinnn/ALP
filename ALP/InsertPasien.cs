@@ -382,9 +382,6 @@ namespace ALP
             conn.Close();
 
             MessageBox.Show("Pasien Berhasil di Input");
-
-            Insert insrt = new Insert();
-            insrt.Show();
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
@@ -435,6 +432,13 @@ namespace ALP
                 string hub = cbhub.Text.ToString();
 
                 insertpasien(namapasien, namapj, tgllahir, kelamin, alamat, kota, notelp, dokter, notelppj, hub, tglmasuk, tglkeluar, idjenis);
+
+                this.Hide();
+
+                Insert insrt = new Insert();
+                insrt.ShowDialog();
+
+                this.Close();
             }
         }
 
@@ -452,8 +456,12 @@ namespace ALP
 
                 MessageBox.Show("Pasien Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
 
+                this.Hide();
+
                 Insert insrt = new Insert();
-                insrt.Show();
+                insrt.ShowDialog();
+
+                this.Close();
             }
             else
             {

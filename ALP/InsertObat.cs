@@ -283,6 +283,11 @@ namespace ALP
                     InsertUseObat(idobat, qty);
                 }
 
+                this.Hide();
+
+                Insert insrt = new Insert();
+                insrt.ShowDialog();
+
                 this.Close();
             }
         }

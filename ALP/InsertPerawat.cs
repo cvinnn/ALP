@@ -59,6 +59,7 @@ namespace ALP
 
             dataGridView1.Columns["id_perawat"].Visible = false;
             dataGridView1.Columns["remove"].Visible = false;
+            dataGridView1.Columns["gender"].Visible = false;
         }
 
         public void generateidperawat()
@@ -101,7 +102,7 @@ namespace ALP
 
         public void removeperawat(string idperawat)
         {
-            query = $"update perawat set `remove` = '1' where id_pasien = '{idperawat}'";
+            query = $"update perawat set `remove` = '1' where id_perawat = '{idperawat}'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -120,9 +121,6 @@ namespace ALP
             conn.Close();
 
             MessageBox.Show("Perawat Berhasil di Input");
-
-            Insert insrt = new Insert();
-            insrt.Show();
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
@@ -131,11 +129,6 @@ namespace ALP
             this.TopLevel = false;
         }
 
-        private void btnInsert_Click(object sender, EventArgs e)
-        {
-            this.panel1.Visible = true;
-            this.panel2.Visible = false;
-        }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
@@ -158,6 +151,13 @@ namespace ALP
                 generateidperawat();
 
                 insertperawat(namaperawat, kelamin, lantai);
+
+                this.Hide();
+
+                Insert insrt = new Insert();
+                insrt.ShowDialog();
+
+                this.Close();
             }
         }
 
@@ -175,12 +175,30 @@ namespace ALP
 
                 MessageBox.Show("Perawat Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
 
+                this.Hide();
+
                 Insert insrt = new Insert();
-                insrt.Show();
+                insrt.ShowDialog();
+
+                this.Close();
             }
             else
             {
                 MessageBox.Show("Silahkan Pilih Perawat Yang Mau di Hapus", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.panel1.Visible = true;
+                this.panel2.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or display an error message
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
     }

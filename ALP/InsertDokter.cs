@@ -47,8 +47,7 @@ namespace ALP
             cbSpecialis.ValueMember = "id";
             cbSpecialis.DisplayMember = "nat";
 
-            cbSpecialis.SelectedItem = "";
-            cbSpecialis.SelectedValue = "";
+            cbSpecialis.SelectedIndex = -1;
 
             cbalatkelamin.Items.Add("Male");
             cbalatkelamin.Items.Add("Female");
@@ -131,9 +130,6 @@ namespace ALP
             conn.Close();
 
             MessageBox.Show("Dokter Berhasil di Input");
-
-            Insert insrt = new Insert();
-            insrt.Show();
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
@@ -169,6 +165,13 @@ namespace ALP
                 string harga = txtHarga.Text.ToString();
 
                 insertdokter(namaperawat, kelamin, spesialis, harga);
+
+                this.Hide();
+
+                Insert insrt = new Insert();
+                insrt.ShowDialog();
+
+                this.Close();
             }
         }
 
@@ -186,8 +189,10 @@ namespace ALP
 
                 MessageBox.Show("Dokter Sudah di Hapus", "Berhasil", MessageBoxButtons.OK);
 
-                Insert insrt = new Insert();
-                insrt.Show();
+                this.Hide();
+                Form1 parentForm = new Form1();
+                parentForm.Show();
+                this.Close();
             }
             else
             {
