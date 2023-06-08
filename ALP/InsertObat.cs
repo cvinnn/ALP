@@ -44,7 +44,7 @@ namespace ALP
 
             dt = new DataTable();
 
-            query = "SELECT p.id_pasien as 'id', p.nama_pasien as 'nat' FROM pasien p;";
+            query = "SELECT p.id_pasien as 'id', p.nama_pasien as 'nat' FROM pasien p where `remove` = '0';";
             conn = new MySqlConnection(strconn);
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);

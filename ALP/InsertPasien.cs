@@ -19,6 +19,7 @@ namespace ALP
         public InsertPasien()
         {
             InitializeComponent();
+            cbLoader();
             cbJnsKmr.DropDownStyle = ComboBoxStyle.DropDownList; 
             cbhub.DropDownStyle = ComboBoxStyle.DropDownList;
             cbDokter.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -112,9 +113,16 @@ namespace ALP
             dataGridView1.Columns["idpasien"].Visible = false;
         }
 
-        public void removepasien(string idpasien)
+        public void removepasien(string idpasien, string nokamar)
         {
             query = $"update pasien set `remove` = '1' where id_pasien = '{idpasien}'";
+            conn = new MySqlConnection(strconn);
+            conn.Open();
+            cmd = new MySqlCommand(query, conn);
+            reader = cmd.ExecuteReader();
+            conn.Close();
+
+            query = $"update kamar set available = 'Y' where id_kamar = '{nokamar}'";
             conn = new MySqlConnection(strconn);
             conn.Open();
             cmd = new MySqlCommand(query, conn);
@@ -225,16 +233,44 @@ namespace ALP
 
             lastid = listid[listid.Count-1];
             depan = lastid.Substring(0,1);
-            id = Convert.ToInt32(lastid.Substring(1, lastid.Length-1)) + 1;
 
 
-            for (int i = 0; i < (lastid.Length) - (id.ToString().Length) - 1; i++)
+            dt = new DataTable();
+
+            query = "select id_jenis from kamar group by 1";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            List<string> Types = new List<string>();
+
+            foreach (DataRow row in dt.Rows)
             {
-                zero += "0";
+                string type = row["id_jenis"].ToString();
+                Types.Add(type);
             }
 
-            newnokamar = depan + zero + id;
+            dt = new DataTable();
+
+            query = $"select id_kamar from kamar where id_jenis = '{idjenis}' and available = 'Y' limit 1";
+            conn = new MySqlConnection(strconn);
+            cmd = new MySqlCommand(query, conn);
+            adapter = new MySqlDataAdapter(cmd);
+
+            adapter.Fill(dt);
+
+            newnokamar = dt.Rows[0]["id_kamar"].ToString();
+
+            if (newnokamar == null)
+            {
+                MessageBox.Show("All Room With This Type Already Full. Please Select For Another Room");
+                cbJnsKmr.SelectedIndex = -1;
+                return;
+            }
         }
+
         public void generateidperawat(string lantai)
         {
             dt = new DataTable();
@@ -273,6 +309,7 @@ namespace ALP
 
             idperawat = depan + zero + id;
         }
+
         public void generateidnota()
         {
             dt = new DataTable();
@@ -310,6 +347,7 @@ namespace ALP
 
             newidnota = depan + zero + id;
         }
+
         private string generateiduseobat()
         {
             dt = new DataTable();
@@ -351,37 +389,55 @@ namespace ALP
 
             return newid;
         }
-        public void insertpasien(string namapasien, string namapj, string tgllahir, string kelamin, string alamat,string kota, string notelp, string iddokter, string notelppj, string hub, string tglmsk, string tglkeluar, string idjenis)
+
+        public bool insertpasien(string namapasien, string namapj, string tgllahir, string kelamin, string alamat,string kota, string notelp, string iddokter, string notelppj, string hub, string tglmsk, string tglkeluar, string idjenis)
         {
+            bool ok = false;
             generateidpasien();
             generateidpj();
             generateidkamar(idjenis);
-            generateidnota();
-            generateidperawat(newnokamar.Substring(0,1));
-            string newiduseobat = generateiduseobat() + newnokamar.Substring(1);
+            if (newnokamar != null)
+            {
+                generateidnota();
+                generateidperawat(newnokamar.Substring(0, 1));
+                string newiduseobat = generateiduseobat() + newnokamar.Substring(1);
 
-            query = $"INSERT INTO pasien VALUES ('{newidpasien}', '{namapasien}', '{tgllahir}', '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', '0')";
-            conn = new MySqlConnection(strconn);
-            conn.Open();
-            cmd = new MySqlCommand(query, conn);
-            reader = cmd.ExecuteReader();
-            conn.Close();
+                query = $"INSERT INTO pasien VALUES ('{newidpasien}', '{namapasien}', '{tgllahir}', '{alamat}', '{kota}', '{notelp}', '{newidpj}', '{kelamin}', '0')";
+                conn = new MySqlConnection(strconn);
+                conn.Open();
+                cmd = new MySqlCommand(query, conn);
+                reader = cmd.ExecuteReader();
+                conn.Close();
 
-            query = $"INSERT INTO penanggung_jawab VALUES ('{newidpj}', '{namapj}', '{notelppj}', '{hub}')";
-            conn = new MySqlConnection(strconn);
-            conn.Open();
-            cmd = new MySqlCommand(query, conn);
-            reader = cmd.ExecuteReader();
-            conn.Close();
+                query = $"INSERT INTO penanggung_jawab VALUES ('{newidpj}', '{namapj}', '{notelppj}', '{hub}')";
+                conn = new MySqlConnection(strconn);
+                conn.Open();
+                cmd = new MySqlCommand(query, conn);
+                reader = cmd.ExecuteReader();
+                conn.Close();
 
-            query = $"INSERT INTO nota VALUES ('{newidnota}', '{newidpasien}', '{iddokter}', '{newnokamar}', '{idperawat}', '{newiduseobat}', '{tglmsk}', '{tglkeluar}', '0', '0')";
-            conn = new MySqlConnection(strconn);
-            conn.Open();
-            cmd = new MySqlCommand(query, conn);
-            reader = cmd.ExecuteReader();
-            conn.Close();
+                query = $"INSERT INTO nota VALUES ('{newidnota}', '{newidpasien}', '{iddokter}', '{newnokamar}', '{idperawat}', '{newiduseobat}', '{tglmsk}', '{tglkeluar}', '0', '0')";
+                conn = new MySqlConnection(strconn);
+                conn.Open();
+                cmd = new MySqlCommand(query, conn);
+                reader = cmd.ExecuteReader();
+                conn.Close();
 
-            MessageBox.Show("Pasien Berhasil di Input");
+                query = $"update kamar set available = 'N' where id_kamar = '{newnokamar}'";
+                conn = new MySqlConnection(strconn);
+                conn.Open();
+                cmd = new MySqlCommand(query, conn);
+                reader = cmd.ExecuteReader();
+                conn.Close();
+
+                MessageBox.Show("Pasien Berhasil di Input");
+                ok = true;
+            }
+            else
+            {
+                ok = false;
+            }
+            return ok;
         }
 
         private void InsertPasien_Load(object sender, EventArgs e)
@@ -431,12 +487,19 @@ namespace ALP
                 string notelppj = txtnopj.Text.ToString();
                 string hub = cbhub.Text.ToString();
 
-                insertpasien(namapasien, namapj, tgllahir, kelamin, alamat, kota, notelp, dokter, notelppj, hub, tglmasuk, tglkeluar, idjenis);
+                bool nice = insertpasien(namapasien, namapj, tgllahir, kelamin, alamat, kota, notelp, dokter, notelppj, hub, tglmasuk, tglkeluar, idjenis);
 
-                this.Hide();
-                Form1 parentForm = new Form1();
-                parentForm.Show();
-                this.Close();
+                if (nice == true)
+                {
+                    this.Hide();
+                    Form1 parentForm = new Form1();
+                    parentForm.Show();
+                    this.Close();
+                }
+                else
+                {
+
+                }
             }
         }
 
@@ -447,8 +510,20 @@ namespace ALP
                 int rowIndex = dataGridView1.SelectedCells[0].RowIndex;
                 DataGridViewRow selectedRow = dataGridView1.Rows[rowIndex];
                 string selectedValue = selectedRow.Cells["idpasien"].Value.ToString();
+                string nokamar = selectedRow.Cells["No. Kamar"].Value.ToString();
 
-                removepasien(selectedValue);
+                dt = new DataTable();
+
+                query = $"select id_kamar from kamar where no_kamar = '{nokamar}'";
+                conn = new MySqlConnection(strconn);
+                cmd = new MySqlCommand(query, conn);
+                adapter = new MySqlDataAdapter(cmd);
+
+                adapter.Fill(dt);
+
+                newnokamar = dt.Rows[0]["id_kamar"].ToString();
+
+                removepasien(selectedValue, newnokamar);
 
                 dgvloader();
 

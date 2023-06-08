@@ -36,7 +36,7 @@ namespace ALP
         {
             dt = new DataTable();
 
-            query = "SELECT d.id_dokter as 'id', d.speciality as 'nat' FROM dokter d;";
+            query = "SELECT d.id_dokter as 'id', d.speciality as 'nat' FROM dokter d where `remove` = '0';";
             conn = new MySqlConnection(strconn);
             cmd = new MySqlCommand(query, conn);
             adapter = new MySqlDataAdapter(cmd);

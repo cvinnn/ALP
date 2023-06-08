@@ -130,7 +130,6 @@ namespace ALP
             this.TopLevel = false;
         }
 
-
         private void btnRemove_Click(object sender, EventArgs e)
         {
             panel2.Visible = true;
